@@ -37,6 +37,15 @@ return {
     },
   },
 
+  ["C[0, 1, 0]"] = {
+    label = "Log",
+    from = "north",
+    side = "front",
+    tags = {
+      "minecraft:logs",
+    },
+  },
+
   L = {
     label = "Cobblestone",
     from = "north",
