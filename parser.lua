@@ -7,13 +7,11 @@
 -- @ = linked chest
 -- A-Z = chest anchor point
 -- 0 = home
--- ^ = stair / vertical movement
 -- * = input access point
 
 local parser = {}
 
 local SPECIAL_HOME = "0"
-local SPECIAL_STAIR = "^"
 local SPECIAL_INPUT = "*"
 
 local function isUpperLetter(ch)
@@ -25,7 +23,7 @@ local function isChestChar(ch)
 end
 
 local function isSpecialWalkable(ch)
-  return ch == SPECIAL_HOME or ch == SPECIAL_STAIR or ch == SPECIAL_INPUT
+  return ch == SPECIAL_HOME or ch == SPECIAL_INPUT
 end
 
 local function splitKey(key)
@@ -53,10 +51,6 @@ function parser.isWalkable(world, x, y, z)
   return ch == "." or isSpecialWalkable(ch)
 end
 
-function parser.isStair(world, x, y, z)
-  return parser.tileAt(world, x, y, z) == SPECIAL_STAIR
-end
-
 function parser.isChest(world, x, y, z)
   return isChestChar(parser.tileAt(world, x, y, z))
 end
@@ -71,7 +65,6 @@ function parser.buildWorld(config)
     maps = config.maps,
     points = {},
     homes = {},
-    stairs = {},
     inputs = {},
     special = {},
     warnings = {},
@@ -90,10 +83,6 @@ function parser.buildWorld(config)
           local p = { x = x, y = y, z = z, symbol = ch }
           table.insert(world.homes, p)
           addSpecial(world, ch, p)
-        elseif ch == SPECIAL_STAIR then
-          local p = { x = x, y = y, z = z, symbol = ch }
-          table.insert(world.stairs, p)
-          addSpecial(world, ch, p)
         elseif ch == SPECIAL_INPUT then
           local p = { x = x, y = y, z = z, symbol = ch }
           table.insert(world.inputs, p)
@@ -109,24 +98,6 @@ function parser.buildWorld(config)
 
   if config.input and config.input.point == SPECIAL_INPUT and #world.inputs == 0 then
     error("input.point='*' but no * exists on the map.")
-  end
-
-  local floorCount = 0
-  for _ in pairs(config.maps) do floorCount = floorCount + 1 end
-
-  if floorCount > 1 then
-    local stairXZ = nil
-    local hasStair = {}
-    for _, s in ipairs(world.stairs) do
-      hasStair[s.y] = true
-      local k = s.x .. "," .. s.z
-      stairXZ = stairXZ or k
-      if stairXZ ~= k then error("^ must be placed at the same x,z on every floor.") end
-    end
-
-    for y in pairs(config.maps) do
-      if not hasStair[y] then error("multi-floor maps require ^ on every floor. floor: " .. tostring(y)) end
-    end
   end
 
   return world

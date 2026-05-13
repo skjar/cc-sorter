@@ -19,7 +19,6 @@
 @ = linked chest
 A-Z = chest anchor point
 0 = home / idle position
-^ = stair / vertical transfer point
 * = input access point
 ```
 
@@ -29,7 +28,7 @@ Example:
 ############
 #A@@..B@@..#
 #..........#
-#0....^....#
+#0.........#
 #....*.....#
 #C@@..D@@..#
 ############
@@ -138,7 +137,8 @@ movement = {
 Notes:
 
 - Avoidance only works when another mapped walkway exists.
-- Vertical movement through `^` usually cannot be avoided, so the turtle waits and retries.
+- Vertical movement is allowed when the same `x,z` cell is walkable on both floors.
+- In `"avoid"` mode, blocked vertical moves can be routed around when another mapped path exists.
 - For narrow one-way paths, `"wait"` mode may be better than `"avoid"`.
 
 ## Fuel
@@ -162,7 +162,7 @@ Configured fuel slots are skipped by input pickup and item delivery.
 
 - The turtle does not dig.
 - The default input chest is above `*`.
-- Vertical floor changes only happen at `^`.
+- Vertical floor changes happen between matching walkable cells on adjacent floors.
 - GPS is required at startup.
 - If GPS is unavailable or facing calibration fails, the turtle refuses to start.
 - `state.lua` is only used as a movement checkpoint after GPS sync succeeds.

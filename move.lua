@@ -256,6 +256,20 @@ local function stepWait(name)
   return false, "unknown step: " .. tostring(name)
 end
 
+local function blockFailedStep(blocked, stepName, sx, sy, sz)
+  if stepName == "up" or stepName == "down" then
+    blocked.edges = blocked.edges or {}
+    blocked.edges[pathfind.edgeKey(state.x, state.y, state.z, sx, sy, sz)] = true
+    print("avoid blocked move: x=" .. state.x .. " y=" .. state.y .. " z=" .. state.z
+      .. " -> x=" .. sx .. " y=" .. sy .. " z=" .. sz)
+    return
+  end
+
+  blocked.cells = blocked.cells or {}
+  blocked.cells[pathfind.key(sx, sy, sz)] = true
+  print("avoid blocked cell: x=" .. sx .. " y=" .. sy .. " z=" .. sz)
+end
+
 function move.goTo(x, y, z)
   local mode = (configRef.movement and configRef.movement.obstacle_mode) or "avoid"
 
@@ -291,22 +305,15 @@ function move.goTo(x, y, z)
       else
         if stepErr then return false, stepErr end
 
-        -- Vertical movement is usually not avoidable, so wait and retry.
-        if s == "up" or s == "down" then
-          local waitOk, waitErr = stepWait(s)
-          if not waitOk then return false, waitErr end
-        else
-          blocked[pathfind.key(sx, sy, sz)] = true
-          replans = replans + 1
-          print("avoid blocked cell: x=" .. sx .. " y=" .. sy .. " z=" .. sz)
+        blockFailedStep(blocked, s, sx, sy, sz)
+        replans = replans + 1
 
-          if replans > maxReplans then
-            return false, "avoid replans exceeded the limit"
-          end
-
-          needReplan = true
-          break
+        if replans > maxReplans then
+          return false, "avoid replans exceeded the limit"
         end
+
+        needReplan = true
+        break
       end
 
       if state.x == x and state.y == y and state.z == z then break end

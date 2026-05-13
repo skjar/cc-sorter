@@ -1,6 +1,7 @@
 -- pathfind.lua
--- BFS pathfinding. Vertical movement is only allowed through ^ cells.
--- blocked["x,y,z"] = true treats that cell as a temporary wall.
+-- BFS pathfinding. Vertical movement is allowed between matching walkable cells.
+-- blocked cells treat that cell as a temporary wall.
+-- blocked edges treat movement between two adjacent cells as temporarily blocked.
 
 local pathfind = {}
 
@@ -8,12 +9,32 @@ local function key(x, y, z)
   return tostring(x) .. "," .. tostring(y) .. "," .. tostring(z)
 end
 
+local function edgeKey(ax, ay, az, bx, by, bz)
+  local a = key(ax, ay, az)
+  local b = key(bx, by, bz)
+  if a < b then return a .. "|" .. b end
+  return b .. "|" .. a
+end
+
 function pathfind.key(x, y, z)
   return key(x, y, z)
 end
 
+function pathfind.edgeKey(ax, ay, az, bx, by, bz)
+  return edgeKey(ax, ay, az, bx, by, bz)
+end
+
 local function isBlocked(blocked, x, y, z)
-  return blocked and blocked[key(x, y, z)] == true
+  if not blocked then return false end
+
+  local k = key(x, y, z)
+  return blocked[k] == true
+    or (blocked.cells and blocked.cells[k] == true)
+end
+
+local function isEdgeBlocked(blocked, ax, ay, az, bx, by, bz)
+  if not blocked or not blocked.edges then return false end
+  return blocked.edges[edgeKey(ax, ay, az, bx, by, bz)] == true
 end
 
 function pathfind.find(world, parser, start, goal, blocked)
@@ -41,20 +62,18 @@ function pathfind.find(world, parser, start, goal, blocked)
       { x = cur.x, y = cur.y, z = cur.z - 1, move = "north" },
     }
 
-    if parser.isStair(world, cur.x, cur.y, cur.z) then
+    if parser.isWalkable(world, cur.x, cur.y, cur.z) then
       table.insert(neighbors, { x = cur.x, y = cur.y + 1, z = cur.z, move = "up" })
       table.insert(neighbors, { x = cur.x, y = cur.y - 1, z = cur.z, move = "down" })
     end
 
     for _, n in ipairs(neighbors) do
-      local canEnter
-      if n.move == "up" or n.move == "down" then
-        canEnter = parser.isStair(world, n.x, n.y, n.z)
-      else
-        canEnter = parser.isWalkable(world, n.x, n.y, n.z)
-      end
+      local canEnter = parser.isWalkable(world, n.x, n.y, n.z)
 
-      if canEnter and not isBlocked(blocked, n.x, n.y, n.z) then
+      if canEnter
+        and not isBlocked(blocked, n.x, n.y, n.z)
+        and not isEdgeBlocked(blocked, cur.x, cur.y, cur.z, n.x, n.y, n.z)
+      then
         local nk = key(n.x, n.y, n.z)
         if not seen[nk] then
           seen[nk] = true
