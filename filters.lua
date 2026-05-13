@@ -119,6 +119,15 @@ return {
     },
   },
 
+  D = {
+    label = "Apotheosis Gems",
+    from = "south",
+    side = "front",
+    items = {
+      "apotheosis:gem",
+    },
+  },
+
   ["K[0,1,0]"] = {
     label = "Honey",
     from = "north",
