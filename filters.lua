@@ -37,6 +37,24 @@ return {
     },
   },
 
+  ["B[-3,0]"] = {
+    label = "Tools",
+    from = "north",
+    side = "front",
+    tags = {
+      "c:tools",
+    },
+  },
+
+  ["B[-3,1,0]"] = {
+    label = "Armor",
+    from = "north",
+    side = "front",
+    tags = {
+      "c:armors",
+    },
+  },
+
   ["C[0,1,0]"] = {
     label = "Log",
     from = "north",
