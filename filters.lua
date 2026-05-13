@@ -19,6 +19,24 @@
 -- fallback = true
 
 return {
+  A = {
+    label = "Ingot",
+    from = "north",
+    side = "front",
+    items = {
+      "c:ingots",
+    },
+  },
+
+  B = {
+    label = "Gem",
+    from = "north",
+    side = "front",
+    tags = {
+      "c:gems",
+    },
+  },
+
   L = {
     label = "Cobblestone",
     from = "north",
