@@ -46,6 +46,15 @@ return {
     },
   },
 
+  K = {
+    label = "Evilcraft",
+    from = "north",
+    side = "front",
+    mods = {
+      "evilcraft",
+    },
+  },
+
   L = {
     label = "Cobblestone",
     from = "north",
