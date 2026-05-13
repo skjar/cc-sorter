@@ -68,6 +68,25 @@ return {
     },
   },
 
+  ["K[0,1,0]"] = {
+    label = "Honey",
+    from = "north",
+    side = "front",
+    items = {
+      "minecraft:honeycomb",
+      "minecraft:honey_bottle",
+      "minecraft:honeycomb_block",
+      "minecraft:honey_block",
+      "minecraft:bee_nest",
+      "minecraft:beehive",
+    },
+    mods = {
+      "productivebees",
+      "productivelib",
+      "the_bumblezone",
+    },
+  },
+
   K = {
     label = "Evilcraft",
     from = "north",
