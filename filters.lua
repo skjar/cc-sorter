@@ -46,6 +46,28 @@ return {
     },
   },
 
+  C = {
+    label = "Wood",
+    from = "north",
+    side = "front",
+    items = {
+      "minecraft:stick",
+    },
+    tags = {
+      "minecraft:planks",
+      "minecraft:wooden_stairs",
+      "minecraft:wooden_slabs",
+      "minecraft:wooden_fences",
+      "minecraft:fence_gates",
+      "minecraft:wooden_doors",
+      "minecraft:wooden_trapdoors",
+      "minecraft:wooden_pressure_plates",
+      "minecraft:wooden_buttons",
+      "minecraft:saplings",
+      "c:rods/wooden",
+    },
+  },
+
   K = {
     label = "Evilcraft",
     from = "north",
