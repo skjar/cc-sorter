@@ -37,7 +37,7 @@ return {
     },
   },
 
-  ["C[0, 1, 0]"] = {
+  ["C[0,1,0]"] = {
     label = "Log",
     from = "north",
     side = "front",
