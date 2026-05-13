@@ -228,25 +228,6 @@ return {
     },
   },
 
-  -- ["A[0,1,0]"] = {
-  --   label = "Same XZ On Floor Above",
-  --   from = "north",
-  --   side = "front",
-  --   items = {
-  --     "minecraft:stone",
-  --   },
-  -- },
-
-  -- B = {
-  --   label = "Ice and Fire / Cataclysm",
-  --   from = "north",
-  --   side = "front",
-  --   mods = {
-  --     "iceandfire",
-  --     "cataclysm",
-  --   },
-  -- },
-
   Z = {
     label = "Unsorted",
     from = "west",
