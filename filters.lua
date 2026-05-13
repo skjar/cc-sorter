@@ -23,7 +23,7 @@ return {
     label = "Ingot",
     from = "north",
     side = "front",
-    items = {
+    tags = {
       "c:ingots",
     },
   },
