@@ -107,6 +107,18 @@ return {
     },
   },
 
+  ["C[-3,1,0]"] = {
+    label = "Seeds / Flowers / Dyes",
+    from = "north",
+    side = "front",
+    tags = {
+      "minecraft:flowers",
+      "c:flowers",
+      "c:dyes",
+      "c:seeds",
+    },
+  },
+
   ["K[0,1,0]"] = {
     label = "Honey",
     from = "north",
